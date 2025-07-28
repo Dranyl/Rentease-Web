@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./CSS Folder/Properties.css">
+</head>
+
+<body>
+    
+  <div class="header">
+        <div class="nav-links">
+            <div class="items"><button onclick="location.href='Dashboard.html'"><i class="fas fa-home"></i>Dashboard</button></div>
+            <div class="items"><button onclick="location.href='Properties.html'"><i class="fas fa-layer-group"></i>Properties</button></div>
+            <div class="items"><button onclick="location.href='Transaction.html'"><i class="fas fa-credit-card"></i>Transaction</button></div>
+            <div class="items"><button onclick="location.href='Message.html'"><i class="fas fa-message"></i>Message</button></div>
+            <div class="items"><button onclick="location.href='Report.html'"><i class="fas fa-chart-bar"></i>Report</button></div>
+        </div>
+
+        <div class="controls">
+            <div class="notification" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">3</span>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">Notifications</div>
+                    <div class="notification-item" onclick="handleNotification('inquiry')">
+                        <div class="notification-text">New inquiry for Grand Field property</div>
+                        <div class="notification-time">2 minutes ago</div>
+                    </div>
+                    <div class="notification-item" onclick="handleNotification('payment')">
+                        <div class="notification-text">Payment received from Sanny Sabio</div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                    <div class="notification-item" onclick="handleNotification('maintenance')">
+                        <div class="notification-text">Property maintenance scheduled</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-btn" onclick="toggleProfileDropdown()">
+                <img src="./assetsFilesImages/dog.jpg" alt="Profile" class="profile-img">
+                <div class="dropdown" id="profileDropdown">
+                    <div class="dropdown-header">
+                        <div class="profile-info">
+                            <img src="./assetsFilesImages/dog.jpg" alt="Profile" class="profile-img">
+                            <div class="profile-details">
+                                <h4>Polacas, Alfie Lynard</h4>
+                                <p>alfiepolacas@g.cjc.edu.ph</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="showPrivacyPolicy()">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Privacy & Policy</span>
+                    </div>
+                    <div class="dropdown-item" onclick="toggleTheme()">
+                        <i class="fas fa-palette"></i>
+                        <div class="theme-toggle">
+                            <span>Theme</span>
+                            <div class="theme-switch" id="themeSwitch"></div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Privacy & Policy
+                </h2>
+                <button class="modal-close" onclick="closePrivacyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Data Collection</h3>
+                <p>We collect information you provide directly to us, such as when you create an account, use our services, or contact us for support. This includes personal information like your name, email address, and property details.</p>
+                
+                <h3>Information Usage</h3>
+                <p>We use the information we collect to provide, maintain, and improve our services, process transactions, send you technical notices and support messages, and communicate with you about products and services.</p>
+                
+                <h3>Data Security</h3>
+                <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                
+                <h3>Third-Party Services</h3>
+                <p>We may share your information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, and customer service.</p>
+                
+                <h3>Your Rights</h3>
+                <p>You have the right to access, update, or delete your personal information. You may also opt out of certain communications from us.</p>
+                
+                <h3>Contact Information</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us at privacy@property.com</p>
+                
+                <p><strong>Last updated:</strong> January 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Modal - NEW CODE -->
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-content">
+            <div class="filter-header">
+                <h3><i class="fas fa-sliders-h"></i> Filters</h3>
+                <button class="close-btn" onclick="closeFilter()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-tab="price">
+                    <i class="fas fa-peso-sign"></i> Price
+                </button>
+                <button class="filter-tab" data-tab="beds">
+                    <i class="fas fa-bed"></i> Beds
+                </button>
+                <button class="filter-tab" data-tab="types">
+                    <i class="fas fa-home"></i> Types
+                </button>
+                <button class="filter-tab" data-tab="facility">
+                    <i class="fas fa-swimming-pool"></i> Facility
+                </button>
+                <button class="filter-tab" data-tab="booking">
+                    <i class="fas fa-calendar"></i> Book option
+                </button>
+            </div>
+
+            <div class="filter-section">
+                <!-- Price Tab Content -->
+                <div class="tab-content active" id="price-tab">
+                    <div class="price-chart" id="priceChart">
+                        <div class="price-bar" style="height: 30px;" data-price="5000"></div>
+                        <div class="price-bar" style="height: 50px;" data-price="8000"></div>
+                        <div class="price-bar" style="height: 40px;" data-price="12000"></div>
+                        <div class="price-bar active" style="height: 80px;" data-price="15000"></div>
+                        <div class="price-bar active" style="height: 100px;" data-price="18000"></div>
+                        <div class="price-bar active" style="height: 70px;" data-price="22000"></div>
+                        <div class="price-bar active" style="height: 85px;" data-price="25000"></div>
+                        <div class="price-bar active" style="height: 60px;" data-price="28000"></div>
+                        <div class="price-bar" style="height: 45px;" data-price="32000"></div>
+                        <div class="price-bar active" style="height: 90px;" data-price="35000"></div>
+                        <div class="price-bar" style="height: 35px;" data-price="40000"></div>
+                        <div class="price-bar" style="height: 75px;" data-price="45000"></div>
+                    </div>
+
+                    <div class="price-slider-container">
+                        <div class="price-slider">
+                            <div class="price-slider-track"></div>
+                            <div class="price-slider-thumb min" data-thumb="min"></div>
+                            <div class="price-slider-thumb max" data-thumb="max"></div>
+                        </div>
+                    </div>
+
+                    <div class="price-range-inputs">
+                        <div class="price-input-group">
+                            <label><i class="fas fa-peso-sign"></i> Min:</label>
+                            <input type="text" class="price-input" id="minPrice" value="₱6,960" readonly>
+                        </div>
+                        <div class="price-input-group">
+                            <label><i class="fas fa-peso-sign"></i> Max:</label>
+                            <input type="text" class="price-input" id="maxPrice" value="₱52,200" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beds Tab Content -->
+                <div class="tab-content" id="beds-tab">
+                    <div class="room-section">
+                        <h4>Beds Room</h4>
+                        <div class="room-options">
+                            <div class="room-option active" data-beds="any">Any</div>
+                            <div class="room-option" data-beds="1">1</div>
+                            <div class="room-option" data-beds="2">2</div>
+                            <div class="room-option" data-beds="3">3</div>
+                            <div class="room-option" data-beds="4">4</div>
+                            <div class="room-option" data-beds="5">5</div>
+                            <div class="room-option" data-beds="5+">5+</div>
+                        </div>
+                    </div>
+                    
+                    <div class="room-section">
+                        <h4>Bath Room</h4>
+                        <div class="room-options">
+                            <div class="room-option active" data-baths="any">Any</div>
+                            <div class="room-option" data-baths="1">1</div>
+                            <div class="room-option" data-baths="2">2</div>
+                            <div class="room-option" data-baths="3">3</div>
+                            <div class="room-option" data-baths="4">4</div>
+                            <div class="room-option" data-baths="5">5</div>
+                            <div class="room-option" data-baths="5+">5+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Types Tab Content -->
+                <div class="tab-content" id="types-tab">
+                    <div class="property-types">
+                        <div class="property-type active" data-type="house">
+                            <div class="property-type-info">
+                                <div class="property-type-icon house">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <span class="property-type-name">House</span>
+                            </div>
+                            <div class="property-type-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="property-type selected" data-type="hotel">
+                            <div class="property-type-info">
+                                <div class="property-type-icon hotel">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <span class="property-type-name">Hotel</span>
+                            </div>
+                            <div class="property-type-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="property-type" data-type="guesthouse">
+                            <div class="property-type-info">
+                                <div class="property-type-icon guesthouse">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <span class="property-type-name">Guesthouse</span>
+                            </div>
+                            <div class="property-type-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="property-type active" data-type="apartment">
+                            <div class="property-type-info">
+                                <div class="property-type-icon apartment">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <span class="property-type-name">Apartment</span>
+                            </div>
+                            <div class="property-type-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Facility Tab Content -->
+                <div class="tab-content" id="facility-tab">
+                    <div class="facility-grid">
+                        <div class="facility-item active" data-facility="wifi">
+                            <div class="facility-info">
+                                <div class="facility-icon wifi">
+                                    <i class="fas fa-wifi"></i>
+                                </div>
+                                <span class="facility-name">Wifi</span>
+                            </div>
+                            <div class="facility-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="facility-item" data-facility="washer">
+                            <div class="facility-info">
+                                <div class="facility-icon washer">
+                                    <i class="fas fa-tshirt"></i>
+                                </div>
+                                <span class="facility-name">Washer</span>
+                            </div>
+                            <div class="facility-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="facility-item" data-facility="guesthouse">
+                            <div class="facility-info">
+                                <div class="facility-icon guesthouse">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <span class="facility-name">Guesthouse</span>
+                            </div>
+                            <div class="facility-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="facility-item active" data-facility="ac">
+                            <div class="facility-info">
+                                <div class="facility-icon ac">
+                                    <i class="fas fa-snowflake"></i>
+                                </div>
+                                <span class="facility-name">Air Conditioner</span>
+                            </div>
+                            <div class="facility-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="facility-label">Label</div>
+                        </div>
+                        
+                        <div class="facility-item" data-facility="heater">
+                            <div class="facility-info">
+                                <div class="facility-icon heater">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <span class="facility-name">Water Heater</span>
+                            </div>
+                            <div class="facility-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book Option Tab Content -->
+                <div class="tab-content" id="booking-tab">
+                    <div class="book-options">
+                        <div class="book-option active" data-booking="instant">
+                            <div class="book-option-info">
+                                <div class="book-option-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <span class="book-option-name">Instants Booking</span>
+                            </div>
+                            <div class="toggle-switch active" onclick="toggleBookOption(this, 'instant')"></div>
+                        </div>
+                        
+                        <div class="book-option" data-booking="checkin">
+                            <div class="book-option-info">
+                                <div class="book-option-icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <span class="book-option-name">Self Check-in</span>
+                            </div>
+                            <div class="toggle-switch" onclick="toggleBookOption(this, 'checkin')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="reset-btn" onclick="resetFilters()">Reset</button>
+                <button class="apply-btn" onclick="applyFilters()">Find Properties</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="property-section">
+            <div class="property-header">
+                <h2>Properties</h2>
+                <div class="property-controls">
+                    <input class="search-input" type="text" placeholder="Search properties" id="searchInput" />
+                    <button class="filter-btn" onclick="openFilter()">
+                        <i class="fas fa-filter"></i> Filters
+                    </button>
+                    <button class="add-btn" onclick="addNewProperty()">
+                        + Add new properties
+                    </button>
+                    <label class="switch">
+                        <input type="checkbox" id="toggleMap" checked onchange="toggleMap()" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="add-property-modal" id="addPropertyModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i class="fas fa-plus-circle"></i>
+                Add New Property
+            </div>
+            <button class="modal-close" onclick="closeAddPropertyModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <div class="step-navigation">
+                <button class="step-tab active" data-step="1">
+                    <i class="fas fa-info-circle"></i>
+                    Basic Info
+                </button>
+                <button class="step-tab" data-step="2">
+                    <i class="fas fa-images"></i>
+                    Photos
+                </button>
+                <button class="step-tab" data-step="3">
+                    <i class="fas fa-home"></i>
+                    Details
+                </button>
+                <button class="step-tab" data-step="4">
+                    <i class="fas fa-swimming-pool"></i>
+                    Amenities
+                </button>
+                <button class="step-tab" data-step="5">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Location
+                </button>
+                <button class="step-tab" data-step="6">
+                    <i class="fas fa-peso-sign"></i>
+                    Pricing
+                </button>
+            </div>
+
+            <!-- Step 1: Basic Information -->
+            <div class="step-content active" id="step-1">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Basic Property Information
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Property Title <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="propertyTitle" placeholder="e.g., Modern 2BR Apartment in Downtown">
+                            <div class="error-message">Property title is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Property Type <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="propertyType">
+                                <option value="">Select Property Type</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="house">House</option>
+                                <option value="condo">Condominium</option>
+                                <option value="studio">Studio</option>
+                                <option value="villa">Villa</option>
+                                <option value="commercial">Commercial Space</option>
+                            </select>
+                            <div class="error-message">Property type is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Bedrooms <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="bedrooms">
+                                <option value="">Select Bedrooms</option>
+                                <option value="0">Studio</option>
+                                <option value="1">1 Bedroom</option>
+                                <option value="2">2 Bedrooms</option>
+                                <option value="3">3 Bedrooms</option>
+                                <option value="4">4 Bedrooms</option>
+                                <option value="5">5+ Bedrooms</option>
+                            </select>
+                            <div class="error-message">Number of bedrooms is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Bathrooms <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="bathrooms">
+                                <option value="">Select Bathrooms</option>
+                                <option value="1">1 Bathroom</option>
+                                <option value="1.5">1.5 Bathrooms</option>
+                                <option value="2">2 Bathrooms</option>
+                                <option value="2.5">2.5 Bathrooms</option>
+                                <option value="3">3 Bathrooms</option>
+                                <option value="3.5">3.5 Bathrooms</option>
+                                <option value="4">4+ Bathrooms</option>
+                            </select>
+                            <div class="error-message">Number of bathrooms is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Floor Area (sqm) <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-ruler-combined"></i>
+                                <input type="number" class="form-input" id="floorArea" placeholder="e.g., 45">
+                            </div>
+                            <div class="error-message">Floor area is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Lot Area (sqm)
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map"></i>
+                                <input type="number" class="form-input" id="lotArea" placeholder="e.g., 100">
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Property Description <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" id="propertyDescription" placeholder="Describe your property in detail. Include features, condition, and what makes it special..."></textarea>
+                            <div class="error-message">Property description is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Photos -->
+            <div class="step-content" id="step-2">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-images"></i>
+                        Property Photos
+                    </div>
+
+                    <div class="image-upload-container" onclick="document.getElementById('imageUpload').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Click to upload photos</div>
+                        <div class="upload-subtext">Or drag and drop images here (Max 10 photos, 5MB each)</div>
+                        <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                    </div>
+
+                    <div class="image-preview-grid" id="imagePreviewGrid">
+                        <!-- Uploaded images will appear here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Property Details -->
+            <div class="step-content" id="step-3">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-home"></i>
+                        Property Details
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Year Built
+                            </label>
+                            <input type="number" class="form-input" id="yearBuilt" placeholder="e.g., 2020" min="1900" max="2024">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Parking Spaces
+                            </label>
+                            <select class="form-select" id="parkingSpaces">
+                                <option value="0">No Parking</option>
+                                <option value="1">1 Space</option>
+                                <option value="2">2 Spaces</option>
+                                <option value="3">3 Spaces</option>
+                                <option value="4">4+ Spaces</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Furnishing Status
+                            </label>
+                            <select class="form-select" id="furnishingStatus">
+                                <option value="unfurnished">Unfurnished</option>
+                                <option value="semi-furnished">Semi-furnished</option>
+                                <option value="fully-furnished">Fully Furnished</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Property Status
+                            </label>
+                            <select class="form-select" id="propertyStatus">
+                                <option value="available">Available</option>
+                                <option value="occupied">Occupied</option>
+                                <option value="under-renovation">Under Renovation</option>
+                                <option value="maintenance">Under Maintenance</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Pet Policy
+                            </label>
+                            <select class="form-select" id="petPolicy">
+                                <option value="not-allowed">Pets Not Allowed</option>
+                                <option value="cats-only">Cats Only</option>
+                                <option value="dogs-only">Dogs Only</option>
+                                <option value="cats-dogs">Cats & Dogs Allowed</option>
+                                <option value="all-pets">All Pets Welcome</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Floor Level (if applicable)
+                            </label>
+                            <input type="number" class="form-input" id="floorLevel" placeholder="e.g., 5" min="1">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Special Features
+                            </label>
+                            <textarea class="form-textarea" id="specialFeatures" placeholder="List any special features like balcony, garden, rooftop access, etc."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Amenities -->
+            <div class="step-content" id="step-4">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-swimming-pool"></i>
+                        Property Amenities
+                    </div>
+
+                    <div class="amenities-grid" id="amenitiesGrid">
+                        <!-- Amenities will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Location -->
+            <div class="step-content" id="step-5">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Property Location
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Complete Address <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" class="form-input" id="completeAddress" placeholder="e.g., 123 Main Street, Barangay Centro, Digos City">
+                            </div>
+                            <div class="error-message">Complete address is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                City <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="city" placeholder="e.g., Digos City">
+                            <div class="error-message">City is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Province <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="province" placeholder="e.g., Davao del Sur">
+                            <div class="error-message">Province is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                ZIP Code
+                            </label>
+                            <input type="text" class="form-input" id="zipCode" placeholder="e.g., 8002">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Barangay
+                            </label>
+                            <input type="text" class="form-input" id="barangay" placeholder="e.g., Centro">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                Nearby Landmarks
+                            </label>
+                            <textarea class="form-textarea" id="landmarks" placeholder="List nearby landmarks, schools, hospitals, malls, etc."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            <i class="fas fa-map" style="font-size: 48px; margin-bottom: 16px;"></i>
+                            <p>Interactive map will be displayed here</p>
+                            <p style="font-size: 14px; color: #64748b;">Click on the map to set exact location</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Pricing -->
+            <div class="step-content" id="step-6">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-peso-sign"></i>
+                        Pricing & Availability
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Monthly Rent <span class="required">*</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-peso-sign"></i>
+                                <input type="number" class="form-input" id="monthlyRent" placeholder="e.g., 15000" min="0">
+                            </div>
+                            <div class="error-message">Monthly rent is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Security Deposit
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-peso-sign"></i>
+                                <input type="number" class="form-input" id="securityDeposit" placeholder="e.g., 30000" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Advance Payment (months)
+                            </label>
+                            <select class="form-select" id="advancePayment">
+                                <option value="1">1 Month</option>
+                                <option value="2">2 Months</option>
+                                <option value="3">3 Months</option>
+                                <option value="6">6 Months</option>
+                                <option value="12">12 Months</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Minimum Lease Term
+                            </label>
+                            <select class="form-select" id="minLeaseTerm">
+                                <option value="1">1 Month</option>
+                                <option value="3">3 Months</option>
+                                <option value="6">6 Months</option>
+                                <option value="12">12 Months</option>
+                                <option value="24">24 Months</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Available From
+                            </label>
+                            <input type="date" class="form-input" id="availableFrom">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Utilities Included
+                            </label>
+                            <select class="form-select" id="utilitiesIncluded">
+                                <option value="none">No Utilities Included</option>
+                                <option value="water">Water Only</option>
+                                <option value="electricity">Electricity Only</option>
+                                <option value="water-electricity">Water & Electricity</option>
+                                <option value="all">All Utilities Included</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pricing-calculator">
+                        <div class="calculator-title">
+                            <i class="fas fa-calculator"></i>
+                            Total Move-in Cost Calculator
+                        </div>
+                        <div class="price-breakdown" id="priceBreakdown">
+                            <div class="price-item">
+                                <span>Monthly Rent:</span>
+                                <span id="calcRent">₱0</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Security Deposit:</span>
+                                <span id="calcDeposit">₱0</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Advance Payment:</span>
+                                <span id="calcAdvance">₱0</span>
+                            </div>
+                            <div class="price-item total">
+                                <span>Total Move-in Cost:</span>
+                                <span id="calcTotal">₱0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Step -->
+            <div class="step-content" id="step-success" style="display: none;">
+                <div class="success-animation">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="success-title">Property Added Successfully!</div>
+                    <div class="success-message">
+                        Your property has been added to the system and is now available for viewing.
+                        You can manage it from the Properties dashboard.
+                    </div>
+                    <button class="btn btn-primary" onclick="closeAddPropertyModal()">
+                        <i class="fas fa-eye"></i>
+                        View Property Listings
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <div class="step-indicator">
+                Step <span id="currentStep">1</span> of 6
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousStep()" disabled>
+                    <i class="fas fa-arrow-left"></i>
+                    Previous
+                </button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                    Next
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="content">
+                <div class="property-list" id="propertyList">
+                    <!-- Property Cards -->
+                    <div class="card" data-location="lapu-lapu" data-price="1000" data-beds="2" data-baths="2">
+                        <img src="./PropertyImages/House.jpg" alt="House Property" />
+                        <div class="info">
+                            <div>
+                                <h3 class="property-title">House Property</h3>
+                                <p class="property-location">Lapu-Lapu st., Digos City</p>
+                                <hr>
+                                <p><i class="fas fa-bed"></i> 2 Beds | <i class="fas fa-bath"></i> 2 Baths | <i class="fas fa-wifi"></i> Wifi</p>
+                                <p style="font-weight: 600; color: var(--primary-color);">₱ 1,000 / per month</p>
+                            </div>
+                            <button class="detail-btn" onclick="viewDetails(this)">Detail</button>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="card" data-location="lapu-lapu" data-price="1000" data-beds="2" data-baths="2">
+                        <img src="./PropertyImages/Apartment.jpg" alt="Apartment Property" />
+                        <div class="info">
+                            <div>
+                                <h3 class="property-title">Apartment Property</h3>
+                                <p class="property-location">Lapu-Lapu st., Digos City</p>
+                                <hr>
+                                <p><i class="fas fa-bed"></i> 2 Beds | <i class="fas fa-bath"></i> 2 Baths | <i class="fas fa-wifi"></i> Wifi</p>
+                                <p style="font-weight: 600; color: var(--primary-color);">₱ 1,000 / per month</p>
+                            </div>
+                            <button class="detail-btn" onclick="viewDetails(this)">Detail</button>
+                        </div>
+                    </div>
+
+                    <div class="card" data-location="tagaytay" data-price="1000" data-beds="2" data-baths="2">
+                        <img src="./PropertyImages/Hotel Monticello in Tagaytay City, Philippines.jpg" alt="Hotel Property" />
+                        <div class="info">
+                            <div>
+                                <h3 class="property-title">Hotel Monticello in Tagaytay City, Philippines</h3>
+                                <p class="property-location">Tagaytay City, Philippines</p>
+                                <hr>
+                                <p><i class="fas fa-bed"></i> 2 Beds | <i class="fas fa-bath"></i> 2 Baths | <i class="fas fa-wifi"></i> Wifi</p>
+                                <p style="font-weight: 600; color: var(--primary-color);">₱ 1,000 / per month</p>
+                            </div>
+                            <button class="detail-btn" onclick="viewDetails(this)">Detail</button>
+                        </div>
+                    </div>
+
+                    <div class="card" data-location="lapu-lapu" data-price="1000" data-beds="2" data-baths="2">
+                        <img src="./PropertyImages/coridor kosan.jpg" alt="Grand Field Property" />
+                        <div class="info">
+                            <div>
+                                <h3 class="property-title">Grand Field, MN.</h3>
+                                <p class="property-location">Lapu-Lapu st., Digos City</p>
+                                <hr>
+                                <p><i class="fas fa-bed"></i> 2 Beds | <i class="fas fa-bath"></i> 2 Baths | <i class="fas fa-wifi"></i> Wifi</p>
+                                <p style="font-weight: 600; color: var(--primary-color);">₱ 1,000 / per month</p>
+                            </div>
+                            <button class="detail-btn" onclick="viewDetails(this)">Detail</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map View -->
+                <div class="map-view" id="mapContainer">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62813.07965811197!2d125.3311813!3d6.7497405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32f9f50e92fb4919%3A0x89546265be4a97f2!2sDigos%20City!5e0!3m2!1sen!2sph!4v1621678315523!5m2!1sen!2sph" 
+                        width="100%" 
+                        height="700" 
+                        style="border-radius:20px; border: none;"
+                        loading="lazy"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <script src="./JS Folder/Properties.js"></script>
+</body>
+</html>

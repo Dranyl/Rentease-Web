@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" href="./CSS Folder/Report.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="nav-links">
+           <div class="items"><button onclick="location.href='Dashboard.html'"><i class="fas fa-home"></i>Dashboard</button></div>
+            <div class="items"><button onclick="location.href='Properties.html'"><i class="fas fa-layer-group"></i>Properties</button></div>
+            <div class="items"><button onclick="location.href='Transaction.html'"><i class="fas fa-credit-card"></i>Transaction</button></div>
+            <div class="items"><button onclick="location.href='Message.html'"><i class="fas fa-message"></i>Message</button></div>
+            <div class="items"><button onclick="location.href='Report.html'"><i class="fas fa-chart-bar"></i>Report</button></div>
+        </div>
+
+        <div class="controls">
+            <div class="notification" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">3</span>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">Notifications</div>
+                    <div class="notification-item">
+                        <div class="notification-text">New inquiry for Grand Field property</div>
+                        <div class="notification-time">2 minutes ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-text">Payment received from Sanny Sabio</div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-text">Property maintenance scheduled</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile">
+                <img src="./assetsFilesImages/dog.jpg" alt="image">
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Analytics & Reports</h1>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="dateRange">Date Range</label>
+                    <select id="dateRange">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="90">Last 3 Months</option>
+                        <option value="365">Last Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="reportType">Report Type</label>
+                    <select id="reportType">
+                        <option value="revenue">Revenue Report</option>
+                        <option value="occupancy">Occupancy Report</option>
+                        <option value="maintenance">Maintenance Report</option>
+                        <option value="tenant">Tenant Report</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="property">Property</label>
+                    <select id="property">
+                        <option value="all">All Properties</option>
+                        <option value="prop1">Sunset Apartments</option>
+                        <option value="prop2">Ocean View Condos</option>
+                        <option value="prop3">Downtown Plaza</option>
+                    </select>
+                </div>
+                <button class="generate-btn" onclick="generateReport()">
+                    <i class="fas fa-chart-line"></i> Generate Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-peso-sign"></i></div>
+                <div class="stat-value" id="totalRevenue">₱2,450,000</div>
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-change positive">+15.3% vs last month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-home"></i></div>
+                <div class="stat-value" id="occupancyRate">92%</div>
+                <div class="stat-label">Occupancy Rate</div>
+                <div class="stat-change positive">+3.2% vs last month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-value" id="activeTenants">156</div>
+                <div class="stat-label">Active Tenants</div>
+                <div class="stat-change positive">+8 new tenants</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-tools"></i></div>
+                <div class="stat-value" id="maintenanceRequests">23</div>
+                <div class="stat-label">Maintenance Requests</div>
+                <div class="stat-change negative">-12% vs last month</div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3 class="chart-title">Monthly Revenue Trend</h3>
+                <canvas id="revenueChart" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">Property Distribution</h3>
+                <canvas id="propertyChart" width="300" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card full-width-chart">
+                <h3 class="chart-title">Occupancy Rate by Property</h3>
+                <canvas id="occupancyChart" width="800" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="data-table">
+            <div class="table-header">
+                <h3 class="table-title">Recent Transactions</h3>
+                <button class="export-btn" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+            </div>
+            <table id="transactionTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Property</th>
+                        <th>Tenant</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-07-24</td>
+                        <td>Sunset Apartments - Unit 101</td>
+                        <td>Sanny Sabio</td>
+                        <td>₱25,000</td>
+                        <td>Rent Payment</td>
+                        <td><span class="status-badge status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-23</td>
+                        <td>Ocean View Condos - Unit 502</td>
+                        <td>Andrei besanez</td>
+                        <td>₱35,000</td>
+                        <td>Rent Payment</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-22</td>
+                        <td>Downtown Plaza - Unit 203</td>
+                        <td>Levi Parba</td>
+                        <td>₱30,000</td>
+                        <td>Rent Payment</td>
+                        <td><span class="status-badge status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-21</td>
+                        <td>Sunset Apartments - Unit 205</td>
+                        <td>Angelo Ang</td>
+                        <td>₱2,500</td>
+                        <td>Maintenance Fee</td>
+                        <td><span class="status-badge status-active">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025-07-20</td>
+                        <td>Ocean View Condos - Unit 301</td>
+                        <td>Z Andrie Barraba</td>
+                        <td>₱40,000</td>
+                        <td>Deposit</td>
+                        <td><span class="status-badge status-inactive">Refunded</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <script src="./JS Folder/Report.js"></script>
+</body>
+</html>

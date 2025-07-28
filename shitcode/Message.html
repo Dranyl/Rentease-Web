@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message</title>
+    <link rel="stylesheet" href="./CSS Folder/Message.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="nav-links">
+           <div class="items"><button onclick="location.href='Dashboard.html'"><i class="fas fa-home"></i>Dashboard</button></div>
+            <div class="items"><button onclick="location.href='Properties.html'"><i class="fas fa-layer-group"></i>Properties</button></div>
+            <div class="items"><button onclick="location.href='Transaction.html'"><i class="fas fa-credit-card"></i>Transaction</button></div>
+            <div class="items"><button onclick="location.href='Message.html'"><i class="fas fa-message"></i>Message</button></div>
+            <div class="items"><button onclick="location.href='Report.html'"><i class="fas fa-chart-bar"></i>Report</button></div>
+        </div>
+
+        <div class="controls">
+            <div class="notification" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">3</span>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">Notifications</div>
+                    <div class="notification-item">
+                        <div class="notification-text">New inquiry for Grand Field property</div>
+                        <div class="notification-time">2 minutes ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-text">Payment received from Sanny Sabio</div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-text">Property maintenance scheduled</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile">
+                <img src="./assetsFilesImages/dog.jpg" alt="image">
+            </div>
+        </div>
+    </div>
+
+    <div class="messaging-container">
+        <div class="sidebar">
+            <div class="messages-header">
+                Messages
+            </div>
+            
+            <div class="chat-search">
+                <input type="text" placeholder="Search chat" id="chatSearch">
+            </div>
+
+            <div class="pinned-section">
+                <div class="pinned-header">
+                    <i class="fas fa-thumbtack"></i>
+                    <span>Pinned</span>
+                </div>
+                
+                <div class="chat-item pinned active" data-chat-id="1">
+                    <div class="chat-avatar">
+                        <img src="./assetsFilesImages/sanny.jpg" alt="Sanny Sabio">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-name">Sanny Sabio</div>
+                        <div class="chat-preview">Good evening pre Salamat sa service nindut! kaayu ang apartment!!!</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">8:42</div>
+                        <div class="unread-badge">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-list">
+                <h4>All Messages</h4>
+                
+                <div class="chat-item" data-chat-id="2">
+                    <div class="chat-avatar">
+                        <img src="./assetsFilesImages/dacer.jpg" alt="John Paul Dacer">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-name">John Paul Dacer</div>
+                        <div class="chat-preview">How About sa Kuyente ug tubig?</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">7:12</div>
+                        <div class="unread-badge">1</div>
+                    </div>
+                </div>
+
+                <div class="chat-item" data-chat-id="3">
+                    <div class="chat-avatar">
+                        <img src="assetsFilesImages/Andrei.jpg" alt="Andrei Besañez">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-name">Andrei Besañez</div>
+                        <div class="chat-preview">Thank you for your help yesterday!</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">Yesterday</div>
+                    </div>
+                </div>
+
+                <div class="chat-item" data-chat-id="4">
+                    <div class="chat-avatar">
+                        <img src="assetsFilesImages/Julios.jpg" alt="Julios Dumagan">
+                    </div>
+                    <div class="chat-info">
+                        <div class="chat-name">Julios Dumagan</div>
+                        <div class="chat-preview">Can we schedule a meeting?</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">Monday</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div id="noChatSelected" class="no-chat-selected">
+                <i class="fas fa-comment-alt"></i>
+                <p>Select a conversation to start messaging</p>
+            </div>
+
+            <div id="chatContainer" style="display: none; flex-direction: column; height: 100%;">
+                <div class="chat-header">
+                    <div class="chat-header-avatar">
+                        <img id="chatHeaderAvatar" src="./assetsFilesImages/sanny.jpg" alt="Sanny Sabio">
+                    </div>
+                    <div class="chat-header-info">
+                        <h3 id="chatHeaderName">Sanny Sabio</h3>
+                        <div class="online-status" id="chatHeaderStatus">Online</div>
+                    </div>
+                </div>
+
+                <div class="messages-area" id="messagesArea">
+                    <!-- Messages will be dynamically loaded here -->
+                </div>
+
+                <div id="typingIndicator" class="typing-indicator" style="display: none; padding: 10px 25px; font-size: 13px; color: #666; font-style: italic;">
+                    <span id="typingUser"></span> is typing
+                    <div class="typing-dots" style="display: inline-flex; gap: 2px; margin-left: 5px;">
+                        <div class="typing-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #999; animation: typing 1.4s infinite ease-in-out;"></div>
+                        <div class="typing-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #999; animation: typing 1.4s infinite ease-in-out; animation-delay: 0.2s;"></div>
+                        <div class="typing-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #999; animation: typing 1.4s infinite ease-in-out; animation-delay: 0.4s;"></div>
+                    </div>
+                </div>
+
+                <div class="message-input-area">
+                    <div class="message-input-container">
+                        <textarea id="messageInput" class="message-input" placeholder="Type a message..." rows="1"></textarea>
+                        <button id="sendButton" class="send-button" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./JS Folder/Message.js"></script>
+
+</body>
+</html>
